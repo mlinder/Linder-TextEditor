@@ -1,6 +1,6 @@
 import React from "react";
 
-import { LinderTextEditor } from "./LinderTextEditor";
+import { default as LinderTextEditor } from "./LinderTextEditor";
 
 export default {
   title: "LinderTextEditor",

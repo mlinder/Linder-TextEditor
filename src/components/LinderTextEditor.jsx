@@ -2,6 +2,8 @@ import React from "react";
 
 import "./LinderTextEditor.css";
 
-export const LinderTextEditor = () => {
+const LinderTextEditor = () => {
   return <div>Hi</div>;
 };
+
+export default LinderTextEditor;

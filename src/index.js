@@ -1,1 +1,3 @@
-console.log("Hi");
+import "./index.css";
+
+export { default as LinderTextEditor } from "./components/LinderTextEditor";
