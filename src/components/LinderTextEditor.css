@@ -20,3 +20,9 @@
 .write-area:focus-within {
   border-color: #2891c8;
 }
+
+blockquote {
+  border-left: 3px solid gray;
+  margin-inline-start: 1rem;
+  padding-inline-start: 0.5rem;
+}

@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from "react";
-import { Editor, createEditor } from "slate";
+import { Editor, createEditor, Transforms } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import isHotkey from "is-hotkey";
 
@@ -11,6 +11,8 @@ const HOTKEYS = {
   "mod+i": "italic",
   "mod+u": "underline"
 };
+
+const LIST_TYPES = ["numbered-list", "bulleted-list"];
 
 const Element = ({ attributes, children, element }) => {
   switch (element.type) {
@@ -43,6 +45,26 @@ const Leaf = ({ attributes, children, leaf }) => {
   return <span {...attributes}>{children}</span>;
 };
 
+const toggleBlock = (editor, format) => {
+  console.log(editor, format);
+  const isActive = isBlockActive(editor, format);
+  const isList = LIST_TYPES.includes(format);
+
+  Transforms.unwrapNodes(editor, {
+    match: n => LIST_TYPES.includes(n.type),
+    split: true
+  });
+
+  Transforms.setNodes(editor, {
+    type: isActive ? "paragraph" : isList ? "list-item" : format
+  });
+
+  if (!isActive && isList) {
+    const block = { type: format, children: [] };
+    Transforms.wrapNodes(editor, block);
+  }
+};
+
 const toggleMark = (editor, format) => {
   const isActive = isMarkActive(editor, format);
 
@@ -51,6 +73,14 @@ const toggleMark = (editor, format) => {
   } else {
     Editor.addMark(editor, format, true);
   }
+};
+
+const isBlockActive = (editor, format) => {
+  const [match] = Editor.nodes(editor, {
+    match: n => n.type === format
+  });
+
+  return !!match;
 };
 
 const isMarkActive = (editor, format) => {
@@ -88,8 +118,10 @@ const LinderTextEditor = () => {
     <div className="text-editor">
       <Toolbar
         editor={editor}
-        isMarkActive={isMarkActive}
+        toggleBlock={toggleBlock}
         toggleMark={toggleMark}
+        isBlockActive={isBlockActive}
+        isMarkActive={isMarkActive}
       />
       <Slate editor={editor} value={value} onChange={value => setValue(value)}>
         <Editable
