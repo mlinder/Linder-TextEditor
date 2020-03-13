@@ -1,5 +1,22 @@
 .text-editor {
-  padding: 0.5rem;
-  background-color: pink;
+}
+
+.write-area {
+  padding: 0 0.5rem;
+  padding: 0.875rem;
+  background-color: white;
   border: 1px solid black;
+  transition: border-color 200ms;
+  min-height: calc(3em * 1.5);
+  line-height: 1.5;
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.write-area > :first-child {
+  margin-top: 0;
+}
+
+.write-area:focus-within {
+  border-color: #2891c8;
 }
